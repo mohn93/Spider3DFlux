@@ -135,7 +135,7 @@ class ImageTools {
       // print("image_tools: url $url use url?.isEmpty ?? true");
 
       return FutureBuilder<bool>(
-        future: Future.delayed(const Duration(seconds: 10), () => false),
+        future: Future.delayed(const Duration(seconds: 0), () => false),
         initialData: true,
         builder: (context, snapshot) {
           final showSkeleton = snapshot.data!;
