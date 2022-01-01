@@ -206,6 +206,7 @@ class _BackdropMenuState extends State<BackdropMenu> {
                 // print(forIndex);
               }
             }
+            // myOrderFilters = myOrderFilters?.sublist(0,forIndex);
             // filterAttr.lstProductAttribute = myOrderFilters;
 
             return SingleChildScrollView(
@@ -246,51 +247,51 @@ class _BackdropMenuState extends State<BackdropMenu> {
                   const SizedBox(height: 10),
 
                   // Layout title & selection
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15),
-                    child: Text(
-                      S.of(context).layout.toUpperCase(),
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Wrap(
-                    children: <Widget>[
-                      const SizedBox(width: 8),
-                      for (var item in kProductListLayout)
-                        Tooltip(
-                          message: item['layout']!,
-                          child: GestureDetector(
-                            onTap: () =>
-                                Provider.of<AppModel>(context, listen: false)
-                                    .updateProductListLayout(item['layout']),
-                            child: Container(
-                              width: 50,
-                              height: 46,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: selectLayout == item['layout']
-                                      ? Theme.of(context).backgroundColor
-                                      : Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(9.0)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Image.asset(
-                                  item['image']!,
-                                  color: selectLayout == item['layout']
-                                      ? Theme.of(context).accentColor
-                                      : Colors.white.withOpacity(0.3),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 15),
+                  //   child: Text(
+                  //     S.of(context).layout.toUpperCase(),
+                  //     style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  //           fontWeight: FontWeight.w700,
+                  //           color: Colors.white,
+                  //         ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 5.0),
+                  // Wrap(
+                  //   children: <Widget>[
+                  //     const SizedBox(width: 8),
+                  //     for (var item in kProductListLayout)
+                  //       Tooltip(
+                  //         message: item['layout']!,
+                  //         child: GestureDetector(
+                  //           onTap: () =>
+                  //               Provider.of<AppModel>(context, listen: false)
+                  //                   .updateProductListLayout(item['layout']),
+                  //           child: Container(
+                  //             width: 50,
+                  //             height: 46,
+                  //             margin: const EdgeInsets.symmetric(
+                  //                 horizontal: 8, vertical: 4),
+                  //             decoration: BoxDecoration(
+                  //                 color: selectLayout == item['layout']
+                  //                     ? Theme.of(context).backgroundColor
+                  //                     : Colors.white.withOpacity(0.1),
+                  //                 borderRadius: BorderRadius.circular(9.0)),
+                  //             child: Padding(
+                  //               padding: const EdgeInsets.all(10.0),
+                  //               child: Image.asset(
+                  //                 item['image']!,
+                  //                 color: selectLayout == item['layout']
+                  //                     ? Theme.of(context).accentColor
+                  //                     : Colors.white.withOpacity(0.3),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       )
+                  //   ],
+                  // ),
 
                   // Category title & bubble
                   Visibility(
@@ -320,6 +321,7 @@ class _BackdropMenuState extends State<BackdropMenu> {
                             color: Colors.white12,
                             borderRadius: BorderRadius.circular(3.0)),
                         child: TreeView(
+
                           parentList: [
                             for (var item in rootCategories)
                               // if root item = spider usa pass ELSE do and add as level 2
@@ -408,6 +410,52 @@ class _BackdropMenuState extends State<BackdropMenu> {
                       value: filterAttr,
                       child: Consumer<FilterAttributeModel>(
                         builder: (context, value, child) {
+
+                          var newLstProductAttributes = List.of(filterAttr.lstProductAttribute!);
+                          var lstProductAttribute = List.of(filterAttr.lstProductAttribute!);
+
+                          var mustBeAddedCount = 0;
+                          var forIndex = 0;
+                          for (var item in lstProductAttribute) {
+                            switch (item.name?.trim()) {
+                              case 'A1 סוג חומר הדפסה':
+                                newLstProductAttributes[0] =  lstProductAttribute[forIndex] ;
+                                mustBeAddedCount++;
+                                break;
+                              case 'צבעים':
+                                newLstProductAttributes[2] =  lstProductAttribute[forIndex] ;
+                                mustBeAddedCount++;
+                                break;
+                              case 'קוטר חומר':
+                                newLstProductAttributes[4] =  lstProductAttribute[forIndex] ;
+                                mustBeAddedCount++;
+                                break;
+                              case 'מותג-':
+                                newLstProductAttributes[6] =  lstProductAttribute[forIndex] ;
+                                mustBeAddedCount++;
+                                break;
+                              case 'שיטת הדפסה':
+                                newLstProductAttributes[1] =  lstProductAttribute[forIndex] ;
+                                mustBeAddedCount++;
+                                break;
+                              case 'תצורה':
+                                newLstProductAttributes[3] =  lstProductAttribute[forIndex] ;
+                                mustBeAddedCount++;
+                                break;
+                              case 'שיטת כיול':
+                                newLstProductAttributes[5] =  lstProductAttribute[forIndex] ;
+                                mustBeAddedCount++;
+                                break;
+                              default:
+                                break;
+                            }
+                            forIndex++;
+                          }
+                          newLstProductAttributes.removeRange(mustBeAddedCount, newLstProductAttributes.length);
+
+                          value.lstProductAttribute = List.of(newLstProductAttributes);
+
+
                           if (value.lstProductAttribute != null) {
                             var list = List<Widget>.generate(
                               value.lstProductAttribute!.length,
@@ -463,6 +511,7 @@ class _BackdropMenuState extends State<BackdropMenu> {
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
                                     crossAxisCount: 2,
+
                                     children: list,
                                   ),
                                 ),

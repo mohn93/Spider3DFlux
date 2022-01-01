@@ -247,8 +247,6 @@ class ProductsPageState extends State<ProductsScreen>
 
   Widget? renderCategoryAppbar() {
     final category = Provider.of<CategoryModel>(context);
-    print('categoryyyyyy');
-    print(category);
 
     var parentCategory = newCategoryId;
     if (category.categories != null && category.categories!.isNotEmpty) {
@@ -445,7 +443,9 @@ class ProductsPageState extends State<ProductsScreen>
                         isEnd: isEnd,
                         onLoadMore: onLoadMore,
                         width: width),
-                backLayer: BackdropMenu(
+                backLayer:
+                // Container(),
+                BackdropMenu(
                   onFilter: onFilter,
                   categoryId: newCategoryId,
                   tagId: newTagId,
